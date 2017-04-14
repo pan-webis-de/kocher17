@@ -1,0 +1,1 @@
+python panAC.py -i "E://author-clustering//pan17-author-clustering-training-dataset-2017-02-15" -o "C://Users//kocher17//Output//outAC"
