@@ -1,7 +1,7 @@
 # kocher17
 
 This repository contains the software for an unsupervised author clustering model and a supervised author profiling approach.
-The systems were used in the PAN Author Identification task and Author Profiling task at CLEF 2016.
+The systems were used in the PAN Author Identification task and the PAN Author Profiling task at CLEF 2016.
 
 ## Usage Author Clustering
 
@@ -25,4 +25,4 @@ If in the test  script the input_folder and the train_folder contain the same da
 ## Requirements
 
 - Python 2.7.13 (probably also works with other versions)
-- The PAN data, available [here](http://pan.webis.de/clef17/pan17-web/author-identification.html "clustering corpus") and [here](http://pan.webis.de/clef17/pan17-web/author-profiling.html "clustering corpus") to download.
+- The PAN data, available [here](http://pan.webis.de/clef17/pan17-web/author-identification.html "clustering corpus") and [here](http://pan.webis.de/clef17/pan17-web/author-profiling.html profiling corpus") to download.

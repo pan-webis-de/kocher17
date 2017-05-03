@@ -17,16 +17,20 @@ def shortenAndRelativeDictsByList(allKnownDocs, allFeatures):
     return shorter
 
 
-def processAllAC(aListOfFile):
+def processAllAC(aListOfFile, ngram=0):
     wLists = []
     for aFile in aListOfFile:
         with open(aFile, 'r') as myFile:
             aText = myFile.read()
             aText = aText.lower()
 
-        aSample = re.sub(r"([\.,?!:\"\'\(\)])+", r" \1 ", aText)
-        aSample = re.sub(" +", " ", aSample)
-        sampleWList = dict(Counter(aSample.split()))
+        aText = re.sub(r"([\.,?!:\"\'\(\)])+", r" \1 ", aText)
+        aText = re.sub(" +", " ", aText)
+        if ngram>0:
+            ngramList = [aText[i:i+ngram] for i in range(len(aText)-(ngram-1))]
+            sampleWList = dict(Counter(ngramList))
+        else:
+            sampleWList = dict(Counter(aText.split()))
         wLists.append(sampleWList)
     return wLists
 
@@ -114,13 +118,12 @@ def getClusterText(clusters, theNames):
             for aDoc in aCluster[:-1]:
                 s += "\t\t{\"document\": \"" + theNames[aDoc] + "\"},\n"
             s += "\t\t{\"document\": \"" + theNames[aCluster[-1]] + "\"}\n"
-            s += "\t],\n"
         else:
             s += "\t\t{\"document\": \"" + theNames[aCluster[0]] + "\"}\n"
-            if clusterId < len(clusters)-1:
-                s += "\t],\n"
-            else:
-                s += "\t]\n"
+        if clusterId < len(clusters)-1:
+            s += "\t],\n"
+        else:
+            s += "\t]\n"
     s += "]"
     return s
 

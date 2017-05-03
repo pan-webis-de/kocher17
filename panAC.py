@@ -140,7 +140,7 @@ if __name__ == '__main__':
         theNames = sorted([f for f in os.listdir(inputFolder + "/" + c)])
         aListPANAP = [inputFolder + "/" + c + "/" + f for f in theNames]
 
-        allKnownDocs = processAllAC(aListPANAP)
+        allKnownDocs = processAllAC(aListPANAP, ngram=6)
         runIt(c)
 
     print "\n done in %.2fs" % (time.clock() - startTime)
