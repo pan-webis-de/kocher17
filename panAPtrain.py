@@ -31,8 +31,10 @@ def doFeatSelect(classDict, notClassDict, aFeatMethod, selectNumber, lowest):
     ky, val = selectedDict.keys(), selectedDict.values()
     val, ky = zip(*sorted(zip(val, ky), reverse=True))
     if lowest:
+        print "and 10 lowest for this class"
         return ky[:selectNumber]+ky[-10:]
     else:
+        print "for this class"
         return ky[:selectNumber]
 
 
@@ -76,28 +78,30 @@ if __name__ == '__main__':
         genderTruth = [re.findall(":::(female|male):::", e)[0] for e in truthAP]
         theClasses = sorted(set(genderTruth))
         listOfDicts = mergeDicts(genderTruth, allKnownDocs)
-        for i in range(len(listOfDicts)):
-            print "Gender", theClasses[i]
+        for i in xrange(len(listOfDicts)):
+            print "Gender", theClasses[i],
+            print "GainRatio with 100 highest",
             classDict = listOfDicts[i]
             notClassDict = listOfDicts[:i]+listOfDicts[i+1:]
             if len(notClassDict) > 1:
                 notClassDict = mergeDicts([0 for _ in notClassDict], notClassDict)
             notClassDict = notClassDict[0]
-            newFeatures = doFeatSelect(classDict, notClassDict, "GainRatio", 100, True)
+            newFeatures = doFeatSelect(classDict, notClassDict, "GainRatio", 100, False)
             genderFeatures.extend(newFeatures)
 
         languageTruth = [re.findall(":::(?:female|male):::(.*?)$", e)[0]
                          for e in truthAP]
         theClasses = sorted(set(languageTruth))
         listOfDicts = mergeDicts(languageTruth, allKnownDocs)
-        for i in range(len(listOfDicts)):
-            print "Language", theClasses[i]
+        for i in xrange(len(listOfDicts)):
+            print "Language", theClasses[i],
+            print "GainRatio with 70 highest",
             classDict = listOfDicts[i]
             notClassDict = listOfDicts[:i]+listOfDicts[i+1:]
             if len(notClassDict) > 1:
                 notClassDict = mergeDicts([0 for _ in notClassDict], notClassDict)
             notClassDict = notClassDict[0]
-            newFeatures = doFeatSelect(classDict, notClassDict, "GainRatio", 70, True)
+            newFeatures = doFeatSelect(classDict, notClassDict, "GainRatio", 70, False)
             languageFeatures.extend(newFeatures)
 
         genderFeatures = sorted(set(genderFeatures))
@@ -108,8 +112,8 @@ if __name__ == '__main__':
         allKnownDocs = shortenAndRelativeDictsByList(allKnownDocs, allFeatures)
 
         names = []
-        for i in range(len(aListPANAP)):
-            names.append(aListPANAP[i].replace(inputFolder, ""))
+        for aFile in aListPANAP:
+            names.append(aFile.replace(inputFolder, ""))
         saveTruthAsModel(outputFolder, truthAP)
         saveFeatListAsModel(outputFolder, [genderFeatures, languageFeatures])
         saveAsModel(outputFolder, allKnownDocs, names)

@@ -11,9 +11,10 @@ from Spatium import calcDist, freqByList
 from WordDict import getListPAN, getTruth
 from WordDict import loadFromModel, loadTruthFromModel, loadFeatListFromModel
 
-loo = 0  # TODO: eval loo=1, test loo=0
+loo = 1  # TODO: eval loo=1, test loo=0
 
 kOfNN = 13
+method = "Clark"
 theLanguage = ""
 theNames = []
 
@@ -60,7 +61,7 @@ def runIt(allKnownDocs, allUnknownDocs, allFeatures):
             dist = calcDist(anUnknown, aKnown, method)
             distMatrixLanguage[unknownIdx][knownIdx] = dist
 
-    for check in range(len(allUnknownDocs)):
+    for check in xrange(len(allUnknownDocs)):
         distGender = distMatrixGender[check]
         _, authorList = zip(*sorted(zip(distGender, range(numKnown))))
         authorList = authorList[loo:kOfNN + loo]
@@ -103,11 +104,10 @@ if __name__ == '__main__':
     assert len(inRun) > 0
     print "Output folder is", outFolder
     assert len(outFolder) > 0
-    method = "Canberra"
 
     apFolder = sorted(os.listdir(inFolder))
     for c in apFolder:
-        print "TEST", c, " with k =", kOfNN
+        print "TEST", c, " with k =", kOfNN, "and distance =", method
         inputFolder = inFolder + "/" + c
         inputRun = inRun + "/" + c
         outputFolder = outFolder + "/" + c

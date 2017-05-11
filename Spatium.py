@@ -35,10 +35,10 @@ def featureSelection(sampleWList, wLen, filterHapax=True):
     ky, val = sampleWList.keys(), sampleWList.values()
     val, ky = zip(*sorted(zip(val, ky), reverse=True))
     if filterHapax and val[0] != val[-1]:
-        aWordList = [ky[i] for i in range(min(wLen, len(ky)))
+        aWordList = [ky[i] for i in xrange(min(wLen, len(ky)))
                      if val[i] > val[-1]]
     else:
-        aWordList = [ky[i] for i in range(min(wLen, len(ky)))]
+        aWordList = [ky[i] for i in xrange(min(wLen, len(ky)))]
     return aWordList
 
 
@@ -61,7 +61,7 @@ def convertToRelFreq(wLists):
 
 
 def calcDiff(sampleFreq, listOfProfileFreq, method):
-    assert method == "Canberra"
+    assert method in ["Canberra", "Clark"]
     differences = []
     for profFreq in listOfProfileFreq:
         differences.append(calcDist(profFreq, sampleFreq, method))
@@ -70,14 +70,21 @@ def calcDiff(sampleFreq, listOfProfileFreq, method):
 
 
 def calcDist(profFreq, sampleFreq, method):
-    assert method == "Canberra"
+    assert method in ["Canberra", "Clark"]
     profFreq = [max(x, 0.000001) for x in profFreq]
     sampleFreq = [max(x, 0.000001) for x in sampleFreq]
-    ln = range(len(profFreq))
+    ln = xrange(len(profFreq))
     diff = [abs(sampleFreq[i] - profFreq[i]) for i in ln]
-    s = [abs(sampleFreq[i]) + abs(profFreq[i]) for i in ln]
-    q = [diff[i]/s[i] for i in range(len(diff))]
-    return sum(q)
+    s = [sampleFreq[i] + profFreq[i] for i in ln]
+    if method == "Canberra":
+        q = [diff[i]/s[i] for i in xrange(len(diff))]
+        return sum(q)
+    elif method == "Clark":
+        q = [(diff[i]/s[i])**2 for i in xrange(len(diff))]
+        return sum(q)**0.5
+    else:
+        print method, "not yet implemented"
+        assert False
 
 
 def distance(profiles, sampleWList, aWordList, method):

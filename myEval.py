@@ -27,7 +27,7 @@ def processAllAC(aListOfFile, ngram=0):
         aText = re.sub(r"([\.,?!:\"\'\(\)])+", r" \1 ", aText)
         aText = re.sub(" +", " ", aText)
         if ngram>0:
-            ngramList = [aText[i:i+ngram] for i in range(len(aText)-(ngram-1))]
+            ngramList = [aText[i:i+ngram] for i in xrange(len(aText)-(ngram-1))]
             sampleWList = dict(Counter(ngramList))
         else:
             sampleWList = dict(Counter(aText.split()))
@@ -78,7 +78,7 @@ def writeToXML(aPath, aName, lang, results):
 
 
 def getMatches(aMatrix, aRowId, matches):
-    for aColId in range(len(aMatrix[aRowId])):
+    for aColId in xrange(len(aMatrix[aRowId])):
         if aMatrix[aRowId][aColId][0] >= 2:  # at least 2 indications
             if aRowId not in matches:
                 matches.append(aRowId)
@@ -131,8 +131,8 @@ def getClusterText(clusters, theNames):
 def getRankingText(aMatrix, noSingleCluster, theNames):
     isFirst = True
     s = "[\n"
-    for aRowId in range(len(aMatrix)):
-        for aColId in range(aRowId+1, len(aMatrix)):
+    for aRowId in xrange(len(aMatrix)):
+        for aColId in xrange(aRowId+1, len(aMatrix)):
             score = aMatrix[aRowId][aColId][1]
             if not isFirst:
                 s += ",\n"

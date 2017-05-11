@@ -26,10 +26,10 @@ def getCandMatrix(distMatrix, stdDevFactor):
         rowStdDev.append((dev/len(rowNoZero))**0.5)
 
     candMat = [[[0, 0, 0] for _ in distMatrix] for _ in distMatrix]
-    for i in range(len(distMatrix)):
+    for i in xrange(len(distMatrix)):
         currAvg = rowAvgs[i]
         currStdDev = rowStdDev[i]
-        for j in range(len(distMatrix)):
+        for j in xrange(len(distMatrix)):
             if i == j:
                 continue
             currVal = distMatrix[i][j]
@@ -44,7 +44,7 @@ def runIt(problemName):
     print problemName
     distMatrix = []
 
-    for check in range(len(allKnownDocs)):
+    for check in xrange(len(allKnownDocs)):
         if len(allKnownDocs[check]) < 5:
             print "\nunsolved", theNames[check], "\n"
             continue
@@ -62,13 +62,13 @@ def runIt(problemName):
     # indication
     # if the distance from A to B is more than x standard deviations
     # below the average from any other to B
-    distMatrixTransp = [[distMatrix[j][i] for j in range(len(distMatrix))]
-                        for i in range(len(distMatrix))]
+    distMatrixTransp = [[distMatrix[j][i] for j in xrange(len(distMatrix))]
+                        for i in xrange(len(distMatrix))]
     vertCandMat = getCandMatrix(distMatrixTransp, stdDevFactor)
 
     candMat = [[[0, 0, 0] for _ in distMatrix] for _ in distMatrix]
-    for i in range(len(candMat)):
-        for j in range(i+1, len(candMat)):
+    for i in xrange(len(candMat)):
+        for j in xrange(i+1, len(candMat)):
             indications = (horCandMat[i][j][0] + vertCandMat[i][j][0] +
                            horCandMat[j][i][0] + vertCandMat[j][i][0])
             indicationWeight = (horCandMat[i][j][1] + vertCandMat[i][j][1] +
